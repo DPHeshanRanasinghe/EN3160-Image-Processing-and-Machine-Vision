@@ -1,0 +1,189 @@
+{
+  "run_id": "20261012T042856_572366Z_e467f11c",
+  "evaluation_scope": "Full official ModelNet40 test split: all 2,468 objects",
+  "metadata_format_version": 2,
+  "num_samples": 2468,
+  "official_test_split_size": 2468,
+  "experimental_limitations": [
+    "An earlier exploratory experiment evaluated 200 official ModelNet40 test objects; the full test set is not entirely unseen at project level.",
+    "Single training seed; MLP uses a train/validation partition, unlike the paper's SVM trained on all 9,840 objects."
+  ],
+  "cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5 Notes/4_Image Processing & Machine Vision/git/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+  "cache_sha256": "c5a638d3c6bfacf2d90ebe8cba554311541fa5e9270c2cff349b91f96127ddef",
+  "cache_seed": 42,
+  "training_seed": 42,
+  "encoder_checkpoint_identifier": {
+    "path": "checkpoints/pretrain_point-jepa_epoch=499-step=40500.ckpt",
+    "sha256": "e002b66c505285d8ac66d73f5adb59d1e4fd6e5e52ba4fcd173b6fe8efcaf6bf"
+  },
+  "class_names": [
+    "airplane",
+    "bathtub",
+    "bed",
+    "bench",
+    "bookshelf",
+    "bottle",
+    "bowl",
+    "car",
+    "chair",
+    "cone",
+    "cup",
+    "curtain",
+    "desk",
+    "door",
+    "dresser",
+    "flower_pot",
+    "glass_box",
+    "guitar",
+    "keyboard",
+    "lamp",
+    "laptop",
+    "mantel",
+    "monitor",
+    "night_stand",
+    "person",
+    "piano",
+    "plant",
+    "radio",
+    "range_hood",
+    "sink",
+    "sofa",
+    "stairs",
+    "stool",
+    "table",
+    "tent",
+    "toilet",
+    "tv_stand",
+    "vase",
+    "wardrobe",
+    "xbox"
+  ],
+  "batch_size": 32,
+  "device": "cuda",
+  "torch_version": "1.13.1+cu117",
+  "training_configuration": {
+    "cache": "experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+    "results_dir": "experiments/attention_pooling/results",
+    "checkpoints_dir": "experiments/attention_pooling/checkpoints",
+    "epochs": 50,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "patience": 10,
+    "device": "auto",
+    "hidden_dim": 256,
+    "dropout": 0.2,
+    "cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5 Notes/4_Image Processing & Machine Vision/git/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+    "resolved_device": "cuda",
+    "architecture": {
+      "feature_dim": 384,
+      "hidden_dim": 256,
+      "num_classes": 40,
+      "dropout": 0.2
+    },
+    "optimizer": "AdamW",
+    "loss": "CrossEntropyLoss",
+    "checkpoint_selection": "minimum validation loss",
+    "torch_version": "1.13.1+cu117",
+    "dataset_sizes": {
+      "train": 8856,
+      "val": 984
+    }
+  },
+  "cache_provenance_check": "Recorded training path and metadata; training checkpoints contain no historical cache hash",
+  "confusion_matrix_convention": "rows=true class, columns=predicted class",
+  "confused_pair_convention": "directed true class -> predicted class; positive off-diagonal counts",
+  "macro_metric_convention": "all 40 classes; undefined precision/recall set to zero",
+  "models": {
+    "baseline": {
+      "accuracy": 0.9201782820097245,
+      "cross_entropy_loss": 0.2457121401010881,
+      "macro_precision": 0.8947931556095273,
+      "macro_recall": 0.8780465116279071,
+      "macro_f1": 0.8805827688029113,
+      "num_samples": 2468,
+      "most_confused_pairs": [
+        {
+          "true_class": "night_stand",
+          "predicted_class": "dresser",
+          "count": 22
+        },
+        {
+          "true_class": "flower_pot",
+          "predicted_class": "plant",
+          "count": 14
+        },
+        {
+          "true_class": "range_hood",
+          "predicted_class": "mantel",
+          "count": 11
+        },
+        {
+          "true_class": "vase",
+          "predicted_class": "cup",
+          "count": 8
+        },
+        {
+          "true_class": "night_stand",
+          "predicted_class": "table",
+          "count": 7
+        }
+      ],
+      "architecture_name": "MaxMeanClassifier",
+      "checkpoint_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5 Notes/4_Image Processing & Machine Vision/git/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/checkpoints/20261012T042856_572366Z_e467f11c/baseline_best.pt",
+      "checkpoint_sha256": "6d07ed6a4026d7fab30aaf781c802d282c6e3b3aa81a61b2b4fcc3c2c373a33f",
+      "best_validation_epoch": 8,
+      "selection_validation_loss": 0.2784397159892369,
+      "selection_validation_accuracy": 0.9085365853658537
+    },
+    "attention": {
+      "accuracy": 0.9217990275526742,
+      "cross_entropy_loss": 0.25960157347942675,
+      "macro_precision": 0.8942268791254755,
+      "macro_recall": 0.8735872093023256,
+      "macro_f1": 0.8780134973809295,
+      "num_samples": 2468,
+      "most_confused_pairs": [
+        {
+          "true_class": "night_stand",
+          "predicted_class": "dresser",
+          "count": 27
+        },
+        {
+          "true_class": "flower_pot",
+          "predicted_class": "plant",
+          "count": 14
+        },
+        {
+          "true_class": "table",
+          "predicted_class": "desk",
+          "count": 7
+        },
+        {
+          "true_class": "vase",
+          "predicted_class": "cup",
+          "count": 7
+        },
+        {
+          "true_class": "flower_pot",
+          "predicted_class": "vase",
+          "count": 5
+        }
+      ],
+      "architecture_name": "MaxAttentionClassifier",
+      "checkpoint_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5 Notes/4_Image Processing & Machine Vision/git/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/checkpoints/20261012T042856_572366Z_e467f11c/attention_best.pt",
+      "checkpoint_sha256": "0069c282817a1d9f359e916c254d887f0823512e22309f3fbd0e524f1c7b689f",
+      "best_validation_epoch": 8,
+      "selection_validation_loss": 0.3014315783492918,
+      "selection_validation_accuracy": 0.9024390243902439
+    }
+  },
+  "paired_correctness_counts": {
+    "both_correct": 2236,
+    "only_baseline_correct": 35,
+    "only_attention_correct": 39,
+    "neither_correct": 158
+  },
+  "evaluation_id": "evaluation_20261012T043112_742087Z_346dc31c"
+}

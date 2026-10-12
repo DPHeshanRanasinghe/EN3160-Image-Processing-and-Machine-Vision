@@ -1,0 +1,59 @@
+{
+  "configuration": {
+    "full_run_id": "20261012T042856_572366Z_e467f11c",
+    "full_evaluation_id": "evaluation_20261012T043112_742087Z_346dc31c",
+    "output_dir": "experiments/attention_pooling/figures/full_modelnet40",
+    "overwrite": false,
+    "dpi": 300,
+    "svm_accuracy": 93.6,
+    "paper_accuracy": 93.7,
+    "paper_spread": 0.2
+  },
+  "matplotlib_version": "3.7.1",
+  "source_artifacts": [
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/summary.json",
+      "sha256": "9d09f8e17149dcc8a0b63a3dc8396243eaeafd710b918bbf87cd58e129c4238d"
+    },
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/evaluation_summary.json",
+      "sha256": "38d53326946c6b68dfe094110c39cca3a89c73a90603c11eb1efdafbadea9c6c"
+    },
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/test_predictions.csv",
+      "sha256": "133b2c6f67a586cd20fe0c0d9f01da76021bd94c130eebf81d87476528adf668"
+    },
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/baseline_metrics.csv",
+      "sha256": "a70434e6dbf8672218fea0d570fc71ae11f44e2c7ec231a394e1e8378c5a5db5"
+    },
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/baseline_confusion_matrix.csv",
+      "sha256": "3d687f2f84738d62a81e397c6f26be98d7c5965c967ce096497c0adf4c7b96bd"
+    },
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/attention_metrics.csv",
+      "sha256": "1f9976b640a8c2fdc3ffb0ba2763b513e4457f2b0b70237b6b225d20f3a87cf4"
+    },
+    {
+      "path": "experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/attention_confusion_matrix.csv",
+      "sha256": "e0d246bcb272644289d5ba342bd412d922c78b99bea5252a5ead3c6eeddf705f"
+    }
+  ],
+  "reference_scalars": {
+    "svm_accuracy": 93.6,
+    "svm_source": "Project-reported reproduction; no saved SVM metrics JSON supplied",
+    "paper_accuracy": 93.7,
+    "paper_spread": 0.2,
+    "paper_source": "https://arxiv.org/abs/2404.16432; upstream README model zoo"
+  },
+  "figures": [
+    "full_accuracy_curves.png",
+    "full_attention_confusion_matrix.png",
+    "full_baseline_confusion_matrix.png",
+    "full_loss_curves.png",
+    "full_paired_correctness.png",
+    "full_test_metric_comparison.png",
+    "publication_summary.png"
+  ]
+}
