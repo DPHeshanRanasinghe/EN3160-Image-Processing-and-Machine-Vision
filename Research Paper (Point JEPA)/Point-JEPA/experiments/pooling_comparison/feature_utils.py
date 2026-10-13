@@ -27,7 +27,7 @@ from pointjepa.models import PointJepa
 
 CHECKPOINT = ROOT / "checkpoints/pretrain_point-jepa_epoch=499-step=40500.ckpt"
 DATA_DIR = ROOT / "data/modelnet40_ply_hdf5_2048"
-CACHE_DIR = ROOT / "experiments/attention_pooling/cache"
+CACHE_DIR = ROOT / "experiments/pooling_comparison/cache"
 
 
 def positive_int(value):

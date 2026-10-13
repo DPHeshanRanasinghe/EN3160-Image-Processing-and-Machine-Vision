@@ -1,0 +1,4 @@
+# Preserve recorded scientific artifacts byte-for-byte on every checkout.
+# Python's csv.writer uses CRLF; it is an intentional line ending, not trailing space.
+experiments/pooling_comparison/results/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+experiments/pooling_comparison/figures/** -text

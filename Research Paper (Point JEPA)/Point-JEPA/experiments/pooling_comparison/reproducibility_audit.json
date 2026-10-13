@@ -1,0 +1,230 @@
+{
+  "status": "passed",
+  "checks": [
+    "Every README Bash command checked against cwd, existing paths, module resolution and argparse options",
+    "All local Markdown links and linked anchors resolve",
+    "Legacy installation script syntax checked after CRLF normalization; no dependency installation",
+    "Conda activation and dependency imports passed",
+    "One real training-object pretrained encoder inference completed: [1,64,384] patches and [1,768] pooled features",
+    "SVM module and recipe inspected without import-time execution or official test evaluation",
+    "Upstream fit CLI and W&B CLI help passed; no pretraining or authentication executed",
+    "Plot regeneration --overwrite succeeded twice in a temporary directory, including existing outputs; repository figures unchanged",
+    "Scoped Git attributes preserve scientific records byte-for-byte and recognize intentional CSV CRLF; editable root README normalized to LF",
+    "Validator excludes regenerable ignored Python bytecode from scientific provenance requirements; all scientific artifact hash checks remain strict",
+    "Final migration validation passed for all 36 scientific artifacts; original bytecode remains outside required scientific checks"
+  ],
+  "documented_commands": [
+    {
+      "readme": "README.md",
+      "command": "source /home/heshan-ranasinghe/miniforge3/etc/profile.d/conda.sh"
+    },
+    {
+      "readme": "README.md",
+      "command": "conda activate pointjepa"
+    },
+    {
+      "readme": "README.md",
+      "command": "python --version"
+    },
+    {
+      "readme": "README.md",
+      "command": "python -B experiments/pooling_comparison/pooling_models.py"
+    },
+    {
+      "readme": "README.md",
+      "command": "python -B -m scripts.pretrained_encoder_inference"
+    },
+    {
+      "readme": "README.md",
+      "command": "python -B experiments/pooling_comparison/validate_migration.py"
+    },
+    {
+      "readme": "README.md",
+      "command": "python -B experiments/pooling_comparison/plot_results.py --overwrite"
+    },
+    {
+      "readme": "README.md",
+      "command": "sed 's/\\r$//' install_py.sh | bash"
+    },
+    {
+      "readme": "README.md",
+      "command": "python -m pointjepa.datasets.process.check # check if datasets are complete"
+    },
+    {
+      "readme": "README.md",
+      "command": "python -m pointjepa fit -c configs/Point-JEPA/pretraining/shapenet.yaml"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "cd \"Research Paper (Point JEPA)/Point-JEPA\""
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "source /home/heshan-ranasinghe/miniforge3/etc/profile.d/conda.sh"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "conda activate pointjepa"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python --version"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/pooling_models.py"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B -m scripts.pretrained_encoder_inference"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/validate_migration.py"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/train.py --help"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/evaluate.py --help"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/extract_full_features.py --help"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/plot_results.py --help"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/plot_results.py    --output-dir experiments/pooling_comparison/figures/presentation_copy"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/plot_results.py --overwrite"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/extract_full_features.py    --seed 42 --val-fraction 0.10 --batch-size 4"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/train.py --models baseline attention    --cache experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt    --seed 42 --epochs 50 --batch-size 32 --lr 0.001 --weight-decay 0.0001 --patience 10"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/train.py --models max_min_std    --cache experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt    --seed 42 --epochs 50 --batch-size 32 --lr 0.001 --weight-decay 0.0001 --patience 10"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/evaluate.py    --run-id 20261012T042856_572366Z_e467f11c    --cache experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt    --batch-size 32 --device auto"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B experiments/pooling_comparison/evaluate.py    --run-id 20261013T141057_022304Z_917cf31b    --cache experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt    --batch-size 32 --device auto"
+    },
+    {
+      "readme": "experiments/pooling_comparison/README.md",
+      "command": "python -B -m scripts.modelnet40_linear_probe"
+    }
+  ],
+  "backup_archive": {
+    "archive_path": "/home/heshan-ranasinghe/research_archives/point_jepa_pooling_migration_2026-10-13_150903_UTC",
+    "file_count": 10,
+    "files": {
+      "evaluate.py": "6aa723047635b7cef65e74ed349823439c49f52742d194b6133ea70ad35d1387",
+      "extract_full_features.py": "a7370de8caa3d7f6c1a082bcef11e9a64915eaf28d8faad62f502eef61edec72",
+      "feature_utils.py": "a291478d62f2905e1318f348c72e6d0ad08dd9975c1bd416e3b276fd9bb8578b",
+      "inventory.json": "117380549d361114b61ad1de6d6ff1a5db22381718c7a0ffb67c8287c9a1ef53",
+      "plot_results.py": "d1db6f231c019e8435d39254a2d63d86c22ff7e7136c0920a2edbab42e09df0f",
+      "pooling_models.py": "723f71d3e3a3b6c8c64e220b68cbd8cfd77f25e6afefbfd2df7c37ba0fc1b861",
+      "project.gitignore": "fb1fd1676f02033acc3a2c8d1f75e81ca5aa994de077a6531e6a4474871e7553",
+      "README.md": "b63d4ecf307ec7e04913b4fd15bd9531d6e6dd105151e783f5d49172c7a4549e",
+      "root.README.md": "088b0e5b4f6a66510de3f4dc9fb61d0b45fe2eff36a345704df46ff6e7ea6f8b",
+      "train.py": "a3a9fbed40b1dff4544d3835c1670884d6b9c18a32c657af8c0e0e6c54112c6c"
+    },
+    "verification": "Copied and verified every SHA-256 before removing the repository-local backup; no unique data deleted."
+  },
+  "scratch_figure_directory": "/tmp/point_jepa_figure_audit_o7gs535x",
+  "training_executed": false,
+  "official_test_inference_executed": false,
+  "svm_reproduction_executed": false,
+  "measured_test_accuracy_percent": {
+    "baseline": 92.01782820097245,
+    "attention": 92.17990275526742,
+    "max_min_std": 90.27552674230147
+  },
+  "limitations": [
+    "Full upstream dataset checker requires datasets absent on this ModelNet40 workstation",
+    "SVM script executes at import time and provides no --help interface; checked statically instead",
+    "Historical checkpoints have no training-time cache hash; retained evaluation hashes remain enforced"
+  ],
+  "final_validation": {
+    "preserved_artifact_count": 36,
+    "preserved_artifacts": [
+      "cache/full_modelnet40_seed42_val10_bs4.pt",
+      "checkpoints/20261012T035804_764978Z_f72eb563/attention_best.pt",
+      "checkpoints/20261012T035804_764978Z_f72eb563/baseline_best.pt",
+      "checkpoints/20261012T042856_572366Z_e467f11c/attention_best.pt",
+      "checkpoints/20261012T042856_572366Z_e467f11c/baseline_best.pt",
+      "checkpoints/20261013T141057_022304Z_917cf31b/max_min_std_best.pt",
+      "figures/full_modelnet40/figure_manifest.json",
+      "figures/full_modelnet40/full_accuracy_curves.pdf",
+      "figures/full_modelnet40/full_accuracy_curves.png",
+      "figures/full_modelnet40/full_attention_confusion_matrix.pdf",
+      "figures/full_modelnet40/full_attention_confusion_matrix.png",
+      "figures/full_modelnet40/full_baseline_confusion_matrix.pdf",
+      "figures/full_modelnet40/full_baseline_confusion_matrix.png",
+      "figures/full_modelnet40/full_loss_curves.pdf",
+      "figures/full_modelnet40/full_loss_curves.png",
+      "figures/full_modelnet40/full_paired_correctness.pdf",
+      "figures/full_modelnet40/full_paired_correctness.png",
+      "figures/full_modelnet40/full_test_metric_comparison.pdf",
+      "figures/full_modelnet40/full_test_metric_comparison.png",
+      "figures/full_modelnet40/publication_summary.pdf",
+      "figures/full_modelnet40/publication_summary.png",
+      "results/20261012T035804_764978Z_f72eb563/attention_metrics.csv",
+      "results/20261012T035804_764978Z_f72eb563/baseline_metrics.csv",
+      "results/20261012T035804_764978Z_f72eb563/summary.json",
+      "results/20261012T042856_572366Z_e467f11c/attention_metrics.csv",
+      "results/20261012T042856_572366Z_e467f11c/baseline_metrics.csv",
+      "results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/attention_confusion_matrix.csv",
+      "results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/baseline_confusion_matrix.csv",
+      "results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/evaluation_summary.json",
+      "results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/test_predictions.csv",
+      "results/20261012T042856_572366Z_e467f11c/summary.json",
+      "results/20261013T141057_022304Z_917cf31b/evaluation_20261013T141438_951650Z_625b2d10/evaluation_summary.json",
+      "results/20261013T141057_022304Z_917cf31b/evaluation_20261013T141438_951650Z_625b2d10/max_min_std_confusion_matrix.csv",
+      "results/20261013T141057_022304Z_917cf31b/evaluation_20261013T141438_951650Z_625b2d10/test_predictions.csv",
+      "results/20261013T141057_022304Z_917cf31b/max_min_std_metrics.csv",
+      "results/20261013T141057_022304Z_917cf31b/summary.json"
+    ],
+    "strictly_loaded_checkpoints": [
+      "experiments/pooling_comparison/checkpoints/20261012T035804_764978Z_f72eb563/baseline_best.pt",
+      "experiments/pooling_comparison/checkpoints/20261012T035804_764978Z_f72eb563/attention_best.pt",
+      "experiments/pooling_comparison/checkpoints/20261012T042856_572366Z_e467f11c/baseline_best.pt",
+      "experiments/pooling_comparison/checkpoints/20261012T042856_572366Z_e467f11c/attention_best.pt",
+      "experiments/pooling_comparison/checkpoints/20261013T141057_022304Z_917cf31b/max_min_std_best.pt"
+    ],
+    "checks": [
+      "SHA-256 and sizes of all historical artifacts",
+      "Five strict checkpoint loads",
+      "Synthetic three-model smoke test",
+      "Both full-run cache metadata and source-label checks",
+      "Unregistered path and changed cache content rejected",
+      "Saved metrics, confusion matrices, curves and aligned test identities",
+      "Python syntax and ten script/module CLI entry points",
+      "Seven PNG/PDF pairs: hashes, PNG dimensions/DPI, vector PDFs",
+      "Figure source hashes and overwrite-protection rejection"
+    ],
+    "training_executed": false,
+    "official_test_inference_executed": false,
+    "limitations": [
+      "No training-time cache hash in historical checkpoints",
+      "Preliminary smoke-run cache is absent"
+    ]
+  }
+}

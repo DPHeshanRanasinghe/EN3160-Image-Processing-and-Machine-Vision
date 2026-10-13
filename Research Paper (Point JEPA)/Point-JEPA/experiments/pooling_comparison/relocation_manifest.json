@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "bindings": [
+    {
+      "run_id": "20261012T042856_572366Z_e467f11c",
+      "historical_cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5 Notes/4_Image Processing & Machine Vision/git/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+      "cache_path": "experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt",
+      "cache_sha256": "c5a638d3c6bfacf2d90ebe8cba554311541fa5e9270c2cff349b91f96127ddef",
+      "summary_path": "experiments/pooling_comparison/results/20261012T042856_572366Z_e467f11c/summary.json",
+      "summary_sha256": "9d09f8e17149dcc8a0b63a3dc8396243eaeafd710b918bbf87cd58e129c4238d",
+      "evaluation_path": "experiments/pooling_comparison/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/evaluation_summary.json",
+      "evaluation_sha256": "38d53326946c6b68dfe094110c39cca3a89c73a90603c11eb1efdafbadea9c6c",
+      "checkpoints": {
+        "baseline": {
+          "path": "experiments/pooling_comparison/checkpoints/20261012T042856_572366Z_e467f11c/baseline_best.pt",
+          "sha256": "6d07ed6a4026d7fab30aaf781c802d282c6e3b3aa81a61b2b4fcc3c2c373a33f"
+        },
+        "attention": {
+          "path": "experiments/pooling_comparison/checkpoints/20261012T042856_572366Z_e467f11c/attention_best.pt",
+          "sha256": "0069c282817a1d9f359e916c254d887f0823512e22309f3fbd0e524f1c7b689f"
+        }
+      }
+    },
+    {
+      "run_id": "20261013T141057_022304Z_917cf31b",
+      "historical_cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+      "cache_path": "experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt",
+      "cache_sha256": "c5a638d3c6bfacf2d90ebe8cba554311541fa5e9270c2cff349b91f96127ddef",
+      "summary_path": "experiments/pooling_comparison/results/20261013T141057_022304Z_917cf31b/summary.json",
+      "summary_sha256": "106915157adf7580b412a1fcb41df9ec72b4ee4ea299f8761d91152c2e9d29fd",
+      "evaluation_path": "experiments/pooling_comparison/results/20261013T141057_022304Z_917cf31b/evaluation_20261013T141438_951650Z_625b2d10/evaluation_summary.json",
+      "evaluation_sha256": "670a89012833cb5412cbb594ae77d002ead1684e32be68431df42a0d4b28ac0c",
+      "checkpoints": {
+        "max_min_std": {
+          "path": "experiments/pooling_comparison/checkpoints/20261013T141057_022304Z_917cf31b/max_min_std_best.pt",
+          "sha256": "ebaf14cd86feb4bf60ee92bb23c2bc5964a11cdaae3d68fedb358070ccb71db8"
+        }
+      }
+    }
+  ],
+  "limitation": "Hashes establish retained evaluation provenance; checkpoints do not contain a training-time cache hash."
+}

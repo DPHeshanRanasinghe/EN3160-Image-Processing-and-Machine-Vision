@@ -15,16 +15,16 @@ from torch.utils.data import DataLoader, TensorDataset
 
 if __package__:
     from .pooling_models import (
-        MaxAttentionClassifier, MaxMeanClassifier, count_trainable_parameters,
+        MaxAttentionClassifier, MaxMeanClassifier, MODEL_CLASSES, count_trainable_parameters,
     )
 else:
     from pooling_models import (
-        MaxAttentionClassifier, MaxMeanClassifier, count_trainable_parameters,
+        MaxAttentionClassifier, MaxMeanClassifier, MODEL_CLASSES, count_trainable_parameters,
     )
 
 
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CACHE = "experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt"
+DEFAULT_CACHE = "experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt"
 
 
 def positive_int(value):
@@ -36,9 +36,12 @@ def positive_int(value):
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--models", nargs="+", choices=tuple(MODEL_CLASSES),
+                        default=["baseline", "attention"],
+                        help="Classifiers to train (default: baseline attention); use max_min_std alone for the third model")
     parser.add_argument("--cache", default=DEFAULT_CACHE)
-    parser.add_argument("--results-dir", default="experiments/attention_pooling/results")
-    parser.add_argument("--checkpoints-dir", default="experiments/attention_pooling/checkpoints")
+    parser.add_argument("--results-dir", default="experiments/pooling_comparison/results")
+    parser.add_argument("--checkpoints-dir", default="experiments/pooling_comparison/checkpoints")
     parser.add_argument("--epochs", type=positive_int, default=50)
     parser.add_argument("--batch-size", type=positive_int, default=32)
     parser.add_argument("--lr", type=float, default=0.001)
@@ -55,6 +58,8 @@ def parse_args():
         parser.error("--weight-decay must be finite and nonnegative")
     if not 0 <= args.dropout < 1:
         parser.error("--dropout must be in [0, 1)")
+    if len(set(args.models)) != len(args.models):
+        parser.error("--models must not contain duplicates")
     return args
 
 
@@ -218,7 +223,7 @@ def train_model(name, model, datasets, args, config, device, results_dir, checkp
             "best_validation_accuracy": best_accuracy,
             "final_training_metrics": train_metrics,
             "final_validation_metrics": val_metrics,
-            "checkpoint_path": str(checkpoint_path), "metrics_csv": str(csv_path)}
+            "checkpoint_path": str(checkpoint_path.relative_to(ROOT)) if checkpoint_path.is_relative_to(ROOT) else str(checkpoint_path), "metrics_csv": str(csv_path.relative_to(ROOT)) if csv_path.is_relative_to(ROOT) else str(csv_path)}
 
 
 def main():
@@ -232,33 +237,33 @@ def main():
     seed_everything(args.seed)
     architecture = {"feature_dim": 384, "hidden_dim": args.hidden_dim,
                     "num_classes": 40, "dropout": args.dropout}
-    baseline = MaxMeanClassifier(**architecture)
-    attention = MaxAttentionClassifier(**architecture)
-    attention.head.load_state_dict(baseline.head.state_dict(), strict=True)
-    identical = all(torch.equal(value, attention.head.state_dict()[key])
-                    for key, value in baseline.head.state_dict().items())
-    if not identical:
-        raise RuntimeError("Initial classifier heads differ")
-    print(f"Initial MLP head parameters identical: {identical}", flush=True)
-    counts = {"baseline": count_trainable_parameters(baseline),
-              "attention": count_trainable_parameters(attention)}
+    models = {name: MODEL_CLASSES[name](**architecture) for name in args.models}
+    identical = None
+    if "baseline" in models and "attention" in models:
+        models["attention"].head.load_state_dict(models["baseline"].head.state_dict(), strict=True)
+        identical = all(torch.equal(value, models["attention"].head.state_dict()[key])
+                        for key, value in models["baseline"].head.state_dict().items())
+        if not identical:
+            raise RuntimeError("Initial classifier heads differ")
+        print(f"Initial MLP head parameters identical: {identical}", flush=True)
+    counts = {name: count_trainable_parameters(model) for name, model in models.items()}
     print(f"Device: {device}; trainable parameters: {counts}")
-    print(f"Batch inputs: [B, 64, 384]; both models return logits: [B, 40] (B <= {args.batch_size})")
+    print(f"Batch inputs: [B, 64, 384]; logits: [B, 40] (B <= {args.batch_size})")
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ") + "_" + uuid.uuid4().hex[:8]
     results_dir = root_path(args.results_dir) / run_id
     checkpoints_dir = root_path(args.checkpoints_dir) / run_id
     results_dir.mkdir(parents=True, exist_ok=False)
     checkpoints_dir.mkdir(parents=True, exist_ok=False)
-    config = {**vars(args), "cache_path": str(cache_path), "resolved_device": str(device),
+    config = {**vars(args), "cache_path": str(cache_path.relative_to(ROOT)) if cache_path.is_relative_to(ROOT) else str(cache_path), "resolved_device": str(device),
               "architecture": architecture, "optimizer": "AdamW", "loss": "CrossEntropyLoss",
               "checkpoint_selection": "minimum validation loss",
               "torch_version": str(torch.__version__),
               "dataset_sizes": {split: len(dataset) for split, dataset in datasets.items()}}
-    summary = {"run_id": run_id, "configuration": config, "cache_path": str(cache_path),
+    summary = {"run_id": run_id, "configuration": config, "cache_path": str(cache_path.relative_to(ROOT)) if cache_path.is_relative_to(ROOT) else str(cache_path),
                "initial_heads_identical": identical, "initial_parameter_counts": counts,
                "models": {}}
     criterion = nn.CrossEntropyLoss()
-    for name, model in (("baseline", baseline), ("attention", attention)):
+    for name, model in models.items():
         summary["models"][name] = train_model(
             name, model, datasets, args, config, device, results_dir, checkpoints_dir, criterion)
     summary_path = results_dir / "summary.json"

@@ -1,0 +1,146 @@
+{
+  "run_id": "20261013T141057_022304Z_917cf31b",
+  "evaluation_scope": "Full official ModelNet40 test split: all 2,468 objects",
+  "metadata_format_version": 2,
+  "num_samples": 2468,
+  "official_test_split_size": 2468,
+  "experimental_limitations": [
+    "An exploratory evaluation previously examined part of the official test split; it was not entirely untouched throughout development.",
+    "Single training seed; MLP uses a train/validation partition, unlike the paper's SVM trained on all 9,840 objects."
+  ],
+  "cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+  "cache_sha256": "c5a638d3c6bfacf2d90ebe8cba554311541fa5e9270c2cff349b91f96127ddef",
+  "cache_seed": 42,
+  "training_seed": 42,
+  "encoder_checkpoint_identifier": {
+    "path": "checkpoints/pretrain_point-jepa_epoch=499-step=40500.ckpt",
+    "sha256": "e002b66c505285d8ac66d73f5adb59d1e4fd6e5e52ba4fcd173b6fe8efcaf6bf"
+  },
+  "class_names": [
+    "airplane",
+    "bathtub",
+    "bed",
+    "bench",
+    "bookshelf",
+    "bottle",
+    "bowl",
+    "car",
+    "chair",
+    "cone",
+    "cup",
+    "curtain",
+    "desk",
+    "door",
+    "dresser",
+    "flower_pot",
+    "glass_box",
+    "guitar",
+    "keyboard",
+    "lamp",
+    "laptop",
+    "mantel",
+    "monitor",
+    "night_stand",
+    "person",
+    "piano",
+    "plant",
+    "radio",
+    "range_hood",
+    "sink",
+    "sofa",
+    "stairs",
+    "stool",
+    "table",
+    "tent",
+    "toilet",
+    "tv_stand",
+    "vase",
+    "wardrobe",
+    "xbox"
+  ],
+  "batch_size": 32,
+  "device": "cuda",
+  "torch_version": "1.13.1+cu117",
+  "training_configuration": {
+    "models": [
+      "max_min_std"
+    ],
+    "cache": "experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+    "results_dir": "experiments/attention_pooling/results",
+    "checkpoints_dir": "experiments/attention_pooling/checkpoints",
+    "epochs": 50,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "patience": 10,
+    "device": "cuda",
+    "hidden_dim": 256,
+    "dropout": 0.2,
+    "cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+    "resolved_device": "cuda",
+    "architecture": {
+      "feature_dim": 384,
+      "hidden_dim": 256,
+      "num_classes": 40,
+      "dropout": 0.2
+    },
+    "optimizer": "AdamW",
+    "loss": "CrossEntropyLoss",
+    "checkpoint_selection": "minimum validation loss",
+    "torch_version": "1.13.1+cu117",
+    "dataset_sizes": {
+      "train": 8856,
+      "val": 984
+    }
+  },
+  "cache_provenance_check": "Recorded training path and metadata; training checkpoints contain no historical cache hash",
+  "confusion_matrix_convention": "rows=true class, columns=predicted class",
+  "confused_pair_convention": "directed true class -> predicted class; positive off-diagonal counts",
+  "macro_metric_convention": "all 40 classes; undefined precision/recall set to zero",
+  "models": {
+    "max_min_std": {
+      "accuracy": 0.9027552674230146,
+      "cross_entropy_loss": 0.3012620015266069,
+      "macro_precision": 0.8711867380874605,
+      "macro_recall": 0.887093023255814,
+      "macro_f1": 0.8734106167806843,
+      "num_samples": 2468,
+      "num_correct": 2228,
+      "most_confused_pairs": [
+        {
+          "true_class": "range_hood",
+          "predicted_class": "mantel",
+          "count": 21
+        },
+        {
+          "true_class": "plant",
+          "predicted_class": "flower_pot",
+          "count": 19
+        },
+        {
+          "true_class": "table",
+          "predicted_class": "desk",
+          "count": 13
+        },
+        {
+          "true_class": "night_stand",
+          "predicted_class": "dresser",
+          "count": 11
+        },
+        {
+          "true_class": "vase",
+          "predicted_class": "flower_pot",
+          "count": 11
+        }
+      ],
+      "architecture_name": "MaxMinStdClassifier",
+      "checkpoint_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/checkpoints/20261013T141057_022304Z_917cf31b/max_min_std_best.pt",
+      "checkpoint_sha256": "ebaf14cd86feb4bf60ee92bb23c2bc5964a11cdaae3d68fedb358070ccb71db8",
+      "best_validation_epoch": 12,
+      "selection_validation_loss": 0.3007558724744533,
+      "selection_validation_accuracy": 0.9034552845528455
+    }
+  },
+  "evaluation_id": "evaluation_20261013T141438_951650Z_625b2d10"
+}

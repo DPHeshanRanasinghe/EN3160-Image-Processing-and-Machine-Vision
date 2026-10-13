@@ -1,0 +1,64 @@
+{
+  "run_id": "20261013T141057_022304Z_917cf31b",
+  "configuration": {
+    "models": [
+      "max_min_std"
+    ],
+    "cache": "experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+    "results_dir": "experiments/attention_pooling/results",
+    "checkpoints_dir": "experiments/attention_pooling/checkpoints",
+    "epochs": 50,
+    "batch_size": 32,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "patience": 10,
+    "device": "cuda",
+    "hidden_dim": 256,
+    "dropout": 0.2,
+    "cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+    "resolved_device": "cuda",
+    "architecture": {
+      "feature_dim": 384,
+      "hidden_dim": 256,
+      "num_classes": 40,
+      "dropout": 0.2
+    },
+    "optimizer": "AdamW",
+    "loss": "CrossEntropyLoss",
+    "checkpoint_selection": "minimum validation loss",
+    "torch_version": "1.13.1+cu117",
+    "dataset_sizes": {
+      "train": 8856,
+      "val": 984
+    }
+  },
+  "cache_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt",
+  "initial_heads_identical": null,
+  "initial_parameter_counts": {
+    "max_min_std": 305448
+  },
+  "models": {
+    "max_min_std": {
+      "architecture_name": "MaxMinStdClassifier",
+      "epochs_completed": 22,
+      "best_epoch": 12,
+      "best_validation_loss": 0.3007558724744533,
+      "best_validation_accuracy": 0.9034552845528455,
+      "final_training_metrics": {
+        "loss": 0.14478733244855982,
+        "accuracy": 0.9494128274616079,
+        "samples": 8856,
+        "attention_gradient_nonzero": false
+      },
+      "final_validation_metrics": {
+        "loss": 0.3446609557159548,
+        "accuracy": 0.9085365853658537,
+        "samples": 984,
+        "attention_gradient_nonzero": false
+      },
+      "checkpoint_path": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/checkpoints/20261013T141057_022304Z_917cf31b/max_min_std_best.pt",
+      "metrics_csv": "/media/heshan-ranasinghe/New Volume/3_Semester 5/Image Processing & Machine Vision/github/Research Paper (Point JEPA)/Point-JEPA/experiments/attention_pooling/results/20261013T141057_022304Z_917cf31b/max_min_std_metrics.csv"
+    }
+  }
+}

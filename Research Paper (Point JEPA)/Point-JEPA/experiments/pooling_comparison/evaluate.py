@@ -17,14 +17,16 @@ from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 
 if __package__:
-    from .pooling_models import MaxAttentionClassifier, MaxMeanClassifier
+    from .pooling_models import MODEL_CLASSES
+    from .provenance import binding_for_checkpoint, validate_cache_binding
 else:
-    from pooling_models import MaxAttentionClassifier, MaxMeanClassifier
+    from pooling_models import MODEL_CLASSES
+    from provenance import binding_for_checkpoint, validate_cache_binding
 
 
 ROOT = Path(__file__).resolve().parents[2]
-EXPERIMENT = ROOT / "experiments/attention_pooling"
-DEFAULT_CACHE = "experiments/attention_pooling/cache/full_modelnet40_seed42_val10_bs4.pt"
+EXPERIMENT = ROOT / "experiments/pooling_comparison"
+DEFAULT_CACHE = "experiments/pooling_comparison/cache/full_modelnet40_seed42_val10_bs4.pt"
 FULL_DESCRIPTION = "Full official ModelNet40 test split: all 2,468 objects"
 
 
@@ -88,10 +90,18 @@ def original_source_labels(cache, split):
 def load_checkpoints(run_id):
     """Reconstruct the saved architectures, with no fallback or partial loading."""
     models, checkpoints, paths = {}, {}, {}
-    for name, model_class in (("baseline", MaxMeanClassifier),
-                              ("attention", MaxAttentionClassifier)):
+    with (EXPERIMENT / "results" / run_id / "summary.json").open() as stream:
+        run_summary = json.load(stream)
+    names = list(run_summary["models"])
+    if not names or any(name not in MODEL_CLASSES for name in names):
+        raise ValueError("Run contains no models or unsupported model names")
+    for name in names:
+        model_class = MODEL_CLASSES[name]
         path = EXPERIMENT / "checkpoints" / run_id / f"{name}_best.pt"
+        binding = binding_for_checkpoint(path)
         checkpoint = torch.load(path, map_location="cpu")
+        # In-memory relocation annotation; historical checkpoint bytes stay intact.
+        checkpoint['_relocation_binding'] = binding
         config = checkpoint["configuration"]
         architecture = config["architecture"]
         if checkpoint["architecture_name"] != model_class.__name__:
@@ -121,7 +131,8 @@ def load_checkpoints(run_id):
         models[name], checkpoints[name], paths[name] = model, checkpoint, path
         print(f"{name}: {path}; strictly loaded {model_class.__name__}; "
               f"best validation epoch={checkpoint['best_epoch']}", flush=True)
-    if checkpoints["baseline"]["configuration"] != checkpoints["attention"]["configuration"]:
+    configurations = [checkpoint["configuration"] for checkpoint in checkpoints.values()]
+    if any(config != configurations[0] for config in configurations[1:]):
         raise ValueError("Checkpoint training configurations differ")
     return models, checkpoints, paths
 
@@ -212,8 +223,7 @@ def validate_cache_metadata(cache, cache_path, checkpoints):
         raise ValueError("Expected an official test manifest containing 2,468 objects")
     for name, checkpoint in checkpoints.items():
         config = checkpoint["configuration"]
-        if root_path(config["cache_path"]) != cache_path.resolve():
-            raise ValueError(f"{name}: evaluation cache path differs from the training cache path")
+        validate_cache_binding(config, cache_path, checkpoint.get('_relocation_binding'))
         for split in ("train", "val"):
             expected = metadata["subset_counts"][split]
             if config["dataset_sizes"][split] != expected or len(cache[split]["labels"]) != expected:
@@ -289,6 +299,7 @@ def evaluate_model(model, loader, device, class_names):
                "cross_entropy_loss": total_loss / len(targets),
                "macro_precision": float(precision), "macro_recall": float(recall),
                "macro_f1": float(f1), "num_samples": len(targets),
+               "num_correct": int((predictions == targets).sum()),
                "most_confused_pairs": most_confused_pairs(matrix, class_names)}
     model.cpu()
     return metrics, predictions, matrix
@@ -300,11 +311,16 @@ def save_artifacts(output, summary, labels, indices, predictions, matrices, clas
         stream.write("\n")
     with (output / "test_predictions.csv").open("x", newline="") as stream:
         writer = csv.writer(stream)
-        writer.writerow(["original_test_index", "ground_truth_label", "ground_truth_class",
-                         "baseline_label", "baseline_prediction", "attention_label", "attention_prediction"])
-        for index, label, baseline, attention in zip(indices, labels, predictions["baseline"], predictions["attention"]):
-            writer.writerow([int(index), int(label), class_names[label], int(baseline),
-                             class_names[baseline], int(attention), class_names[attention]])
+        names = list(predictions)
+        writer.writerow(["original_test_index", "ground_truth_label", "ground_truth_class"] +
+                         [field for name in names for field in
+                          (f"{name}_label", f"{name}_prediction")])
+        for row, (index, label) in enumerate(zip(indices, labels)):
+            values = [int(index), int(label), class_names[label]]
+            for name in names:
+                prediction = int(predictions[name][row])
+                values.extend([prediction, class_names[prediction]])
+            writer.writerow(values)
     for name, matrix in matrices.items():
         with (output / f"{name}_confusion_matrix.csv").open("x", newline="") as stream:
             writer = csv.writer(stream)
@@ -335,12 +351,12 @@ def main():
                "experimental_limitations": [
                    "An exploratory evaluation previously examined part of the official test split; it was not entirely untouched throughout development.",
                    "Single training seed; MLP uses a train/validation partition, unlike the paper's SVM trained on all 9,840 objects."],
-               "cache_path": str(cache_path), "cache_sha256": sha256(cache_path),
-               "cache_seed": cache["seed"], "training_seed": checkpoints["baseline"]["seed"],
+               "cache_path": str(cache_path.relative_to(ROOT)) if cache_path.is_relative_to(ROOT) else str(cache_path), "cache_sha256": sha256(cache_path),
+               "cache_seed": cache["seed"], "training_seed": next(iter(checkpoints.values()))["seed"],
                "encoder_checkpoint_identifier": cache["checkpoint_identifier"],
                "class_names": class_names, "batch_size": args.batch_size,
                "device": str(device), "torch_version": str(torch.__version__),
-               "training_configuration": checkpoints["baseline"]["configuration"],
+               "training_configuration": next(iter(checkpoints.values()))["configuration"],
                "cache_provenance_check": "Recorded training path and metadata; training checkpoints contain no historical cache hash",
                "confusion_matrix_convention": "rows=true class, columns=predicted class",
                "confused_pair_convention": "directed true class -> predicted class; positive off-diagonal counts",
@@ -353,7 +369,7 @@ def main():
         checkpoint = checkpoints[name]
         summary["models"][name] = {
             **metrics, "architecture_name": checkpoint["architecture_name"],
-            "checkpoint_path": str(checkpoint_paths[name]),
+            "checkpoint_path": str(checkpoint_paths[name].relative_to(ROOT)),
             "checkpoint_sha256": sha256(checkpoint_paths[name]),
             "best_validation_epoch": checkpoint["best_epoch"],
             "selection_validation_loss": checkpoint["validation_loss"],
@@ -363,14 +379,15 @@ def main():
               f"loss={metrics['cross_entropy_loss']:.6f}, macro precision={metrics['macro_precision']:.4f}, "
               f"recall={metrics['macro_recall']:.4f}, F1={metrics['macro_f1']:.4f}", flush=True)
         print(f"{name} most confused directed class pairs: {metrics['most_confused_pairs']}")
-    baseline_correct = predictions["baseline"] == labels
-    attention_correct = predictions["attention"] == labels
-    paired = {"both_correct": int((baseline_correct & attention_correct).sum()),
-              "only_baseline_correct": int((baseline_correct & ~attention_correct).sum()),
-              "only_attention_correct": int((~baseline_correct & attention_correct).sum()),
-              "neither_correct": int((~baseline_correct & ~attention_correct).sum())}
-    summary["paired_correctness_counts"] = paired
-    print(f"Paired comparison ({count} test objects): {paired}")
+    if "baseline" in predictions and "attention" in predictions:
+        baseline_correct = predictions["baseline"] == labels
+        attention_correct = predictions["attention"] == labels
+        paired = {"both_correct": int((baseline_correct & attention_correct).sum()),
+                  "only_baseline_correct": int((baseline_correct & ~attention_correct).sum()),
+                  "only_attention_correct": int((~baseline_correct & attention_correct).sum()),
+                  "neither_correct": int((~baseline_correct & ~attention_correct).sum())}
+        summary["paired_correctness_counts"] = paired
+        print(f"Paired comparison ({count} test objects): {paired}")
     evaluation_id = "evaluation_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ") + "_" + uuid.uuid4().hex[:8]
     output = EXPERIMENT / "results" / args.run_id / evaluation_id
     output.mkdir(parents=True, exist_ok=False)

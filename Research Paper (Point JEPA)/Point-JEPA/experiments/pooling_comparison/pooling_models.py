@@ -49,13 +49,27 @@ class MaxAttentionPooling(nn.Module):
         return global_features
 
 
-class ClassificationHead(nn.Module):
-    """Identical head architecture for both pooling methods."""
+class MaxMinStdPooling(nn.Module):
+    """Concatenate patchwise maximum, minimum, and population deviation."""
 
-    def __init__(self, feature_dim=384, hidden_dim=256, num_classes=40, dropout=0.2):
+    def __init__(self, feature_dim=384):
+        super().__init__()
+        self.feature_dim = feature_dim
+
+    def forward(self, x):
+        x = _float_features(x, self.feature_dim)
+        return torch.cat([x.max(dim=1).values, x.min(dim=1).values,
+                          x.std(dim=1, unbiased=False)], dim=-1)
+
+
+class ClassificationHead(nn.Module):
+    """MLP head; default input preserves existing checkpoint tensor shapes."""
+
+    def __init__(self, feature_dim=384, hidden_dim=256, num_classes=40, dropout=0.2,
+                 input_dim=None):
         super().__init__()
         self.layers = nn.Sequential(
-            nn.Linear(2 * feature_dim, hidden_dim),
+            nn.Linear(2 * feature_dim if input_dim is None else input_dim, hidden_dim),
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(hidden_dim, num_classes),
@@ -90,6 +104,23 @@ class MaxAttentionClassifier(nn.Module):
             global_features, weights = self.pooling(x, return_attention=True)
             return self.head(global_features), weights
         return self.head(self.pooling(x))
+
+
+class MaxMinStdClassifier(nn.Module):
+    """Frozen-feature classifier returning raw [B, num_classes] logits."""
+
+    def __init__(self, feature_dim=384, hidden_dim=256, num_classes=40, dropout=0.2):
+        super().__init__()
+        self.pooling = MaxMinStdPooling(feature_dim)
+        self.head = ClassificationHead(feature_dim, hidden_dim, num_classes, dropout,
+                                       input_dim=3 * feature_dim)
+
+    def forward(self, x):
+        return self.head(self.pooling(x))
+
+
+MODEL_CLASSES = {"baseline": MaxMeanClassifier, "attention": MaxAttentionClassifier,
+                 "max_min_std": MaxMinStdClassifier}
 
 
 def count_trainable_parameters(model):
@@ -139,7 +170,37 @@ def smoke_test():
     print(f"Attention sums per sample: {weights.sum(dim=1).tolist()}; normalized=True")
     print(f"Attention score-weight gradient L1 norm: {gradient.abs().sum().item():.6f}")
     print("Attention parameters receive gradients; score-weight gradients are nonzero.")
-    print("Smoke test passed.")
+    new_model = MaxMinStdClassifier()
+    pooled = new_model.pooling(x)
+    assert pooled.shape == (4, 1152)
+    assert pooled.dtype == torch.float32 and torch.isfinite(pooled).all()
+    # Known patch statistics distinguish dim=1 from featurewise deviation and
+    # population deviation from the sample (unbiased) estimator.
+    known = torch.arange(64).float().view(1, 64, 1).expand(2, 64, 384)
+    known_pool = new_model.pooling(known)
+    assert torch.equal(known_pool[:, :384], torch.full((2, 384), 63.0))
+    assert torch.equal(known_pool[:, 384:768], torch.zeros(2, 384))
+    assert torch.allclose(known_pool[:, 768:], torch.full((2, 384), (4095 / 12) ** 0.5))
+    assert torch.equal(new_model.pooling(torch.ones(2, 1, 384))[:, 768:],
+                       torch.zeros(2, 384))
+    logits = new_model(x)
+    assert logits.shape == (4, 40) and torch.isfinite(logits).all()
+    assert count_trainable_parameters(new_model) == 305448
+    for model in (baseline, new_model):
+        model.train()
+        model.zero_grad(set_to_none=True)
+        nn.CrossEntropyLoss()(model(x), torch.arange(4)).backward()
+        for parameter in model.parameters():
+            assert parameter.grad is not None and torch.isfinite(parameter.grad).all()
+        assert sum(p.grad.abs().sum().item() for p in model.parameters()) > 0
+    # Pooling itself also propagates finite gradients to input features.
+    grad_input = x.float().requires_grad_()
+    new_model.pooling(grad_input).sum().backward()
+    assert torch.isfinite(grad_input.grad).all()
+    print("Max/Min/Std: (4, 64, 384) -> (4, 1152) -> (4, 40)")
+    print("Max/Min/Std trainable parameters: 305,448; finite outputs/gradients=True")
+    print("Patchwise population std and singleton-patch zero std verified.")
+    print("Smoke test passed for all three models.")
 
 
 if __name__ == "__main__":

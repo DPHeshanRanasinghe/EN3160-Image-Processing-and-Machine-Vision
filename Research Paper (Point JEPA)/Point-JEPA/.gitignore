@@ -184,10 +184,23 @@ artifacts/*
 # ==================================================
 
 # Exclude preliminary one-epoch smoke-test results
-/experiments/attention_pooling/results/20261012T035804_764978Z_f72eb563/
-/experiments/attention_pooling/checkpoints/20261012T035804_764978Z_f72eb563/
+/experiments/pooling_comparison/results/20261012T035804_764978Z_f72eb563/
+/experiments/pooling_comparison/checkpoints/20261012T035804_764978Z_f72eb563/
 
 # Include selected final research JSON artifacts
-!/experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/summary.json
-!/experiments/attention_pooling/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/evaluation_summary.json
-!/experiments/attention_pooling/figures/full_modelnet40/figure_manifest.json
+!/experiments/pooling_comparison/results/20261012T042856_572366Z_e467f11c/summary.json
+!/experiments/pooling_comparison/results/20261012T042856_572366Z_e467f11c/evaluation_20261012T043112_742087Z_346dc31c/evaluation_summary.json
+!/experiments/pooling_comparison/figures/full_modelnet40/figure_manifest.json
+
+# Local reversible migration backup
+/experiments/pooling_migration_backup/
+# Completed second extension and migration provenance
+!/experiments/pooling_comparison/results/20261013T141057_022304Z_917cf31b/summary.json
+!/experiments/pooling_comparison/results/20261013T141057_022304Z_917cf31b/evaluation_20261013T141438_951650Z_625b2d10/evaluation_summary.json
+!/experiments/pooling_comparison/migration_manifest.json
+!/experiments/pooling_comparison/relocation_manifest.json
+!/experiments/pooling_comparison/validation_report.json
+!/experiments/pooling_comparison/figures/three_model_comparison/figure_manifest.json
+
+# Final README/backup/publication audit
+!/experiments/pooling_comparison/reproducibility_audit.json
