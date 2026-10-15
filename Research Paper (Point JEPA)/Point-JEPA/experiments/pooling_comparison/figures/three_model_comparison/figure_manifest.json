@@ -72,7 +72,7 @@
   "figures": [
     {
       "path": "full_accuracy_curves.pdf",
-      "sha256": "9fbaa581adc377cbf27fa22aec85d57a53372712e1eb9791daa0e6420944915a"
+      "sha256": "c947d8be6e9ee1c562296f03492ea5081adb49dc063aab1e52b8784f3bc8a007"
     },
     {
       "path": "full_accuracy_curves.png",
@@ -80,7 +80,7 @@
     },
     {
       "path": "full_attention_confusion_matrix.pdf",
-      "sha256": "97ef6590cc8481afa33ce425ac3308ed4ab22c348d5823f63d6528881e66db6b"
+      "sha256": "5bbb310fac294349722b0a4fcc86715e30d97d22a7a452f82fc8b3efbf664047"
     },
     {
       "path": "full_attention_confusion_matrix.png",
@@ -88,7 +88,7 @@
     },
     {
       "path": "full_baseline_confusion_matrix.pdf",
-      "sha256": "9193892565026c7e3d6a40cb300166e564ede06d9e5c85eb85e2723bcd3356f0"
+      "sha256": "4a11739956e3f27a18681b5bff02955e3cb972d39bb25e9d982874070cfce7df"
     },
     {
       "path": "full_baseline_confusion_matrix.png",
@@ -96,7 +96,7 @@
     },
     {
       "path": "full_loss_curves.pdf",
-      "sha256": "34520164f50932e2ef9fec0f2233138ea4b57d196c620c2342fa90aa0da8a882"
+      "sha256": "fa89db03520ad34e1673da48e2457366b0b2f8094877f4aa244f1f7c166b730d"
     },
     {
       "path": "full_loss_curves.png",
@@ -104,7 +104,7 @@
     },
     {
       "path": "full_max_min_std_confusion_matrix.pdf",
-      "sha256": "67cae27eeadca9d92fec2dadf4f5f7e602e41b3ced145186d065f633b34c96c5"
+      "sha256": "f012e287512b2422b664eda9291681adada7827a9a2f7bb75b6ec9831109052a"
     },
     {
       "path": "full_max_min_std_confusion_matrix.png",
@@ -112,7 +112,7 @@
     },
     {
       "path": "full_test_metric_comparison.pdf",
-      "sha256": "75fc801ad6c1f6c89ca05d6cf9c18ef986dad097590531f60e84b2b017342f3f"
+      "sha256": "1da4c98f04a25a9277b2f1952e215d5f52e7ac1c5108d4840fe27c87ea88dd51"
     },
     {
       "path": "full_test_metric_comparison.png",
@@ -120,7 +120,7 @@
     },
     {
       "path": "publication_summary.pdf",
-      "sha256": "bbf9ae0f585557c8fefa2fb311ec0725e64e07b0c520a3adb39f43ef16641621"
+      "sha256": "e037c81ef5518308811e6262b6d39379c7251e25604d0055e36512677d341ccf"
     },
     {
       "path": "publication_summary.png",
