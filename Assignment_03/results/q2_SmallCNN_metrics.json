@@ -1,0 +1,16 @@
+{
+  "train_loss": 0.009541062363609671,
+  "train_acc": 0.9972166666666666,
+  "test_loss": 0.018721708011761075,
+  "test_acc": 0.9935,
+  "seconds": 494.34783319999406,
+  "selected_epoch": 10,
+  "epochs": 10,
+  "batch_size": 128,
+  "lr": 0.001,
+  "optimizer": "Adam",
+  "epoch_metrics": "evaluation mode",
+  "seed": 230521,
+  "device": "cuda",
+  "torch_version": "2.5.1"
+}
