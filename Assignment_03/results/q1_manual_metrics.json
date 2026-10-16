@@ -1,0 +1,14 @@
+{
+  "train_loss": 1.3630850065350533,
+  "train_acc": 0.53748,
+  "test_loss": 1.507388077378273,
+  "test_acc": 0.4804,
+  "epochs": 10,
+  "batch_size": 50,
+  "initial_lr": 0.1,
+  "lr_decay": 0.9,
+  "elapsed_seconds": 342.62726909999947,
+  "seed": 230521,
+  "device": "cuda",
+  "torch_version": "2.5.1"
+}

@@ -1,0 +1,21 @@
+{
+  "train_loss": 1.1375897174477578,
+  "train_acc": 0.606,
+  "test_loss": 1.4805939304828644,
+  "test_acc": 0.4924,
+  "epochs": 10,
+  "batch_size": 50,
+  "initial_lr": 0.3,
+  "lr_decay": 0.9,
+  "selection_method": "Final-epoch validation accuracy",
+  "validation_size": 5000,
+  "lr_candidates": [
+    0.03,
+    0.1,
+    0.3
+  ],
+  "elapsed_seconds": 309.4226846999991,
+  "seed": 230521,
+  "device": "cuda",
+  "torch_version": "2.5.1"
+}
