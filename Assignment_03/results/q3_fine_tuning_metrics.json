@@ -1,0 +1,33 @@
+{
+  "train_loss": 0.021638566021212054,
+  "train_acc": 1.0,
+  "val_loss": 0.174479896528342,
+  "val_acc": 0.9607843137254902,
+  "seconds": 194.91111760000058,
+  "selected_epoch": 19,
+  "epochs": 25,
+  "batch_size": 4,
+  "initial_lr": 0.001,
+  "momentum": 0.9,
+  "scheduler_step_size": 7,
+  "scheduler_gamma": 0.1,
+  "trainable_parameters": 11177538,
+  "train_images": 244,
+  "validation_images": 153,
+  "class_to_idx": {
+    "ants": 0,
+    "bees": 1
+  },
+  "weights": "ResNet18_Weights.IMAGENET1K_V1",
+  "selection_method": "Highest validation accuracy",
+  "last_epoch_metrics": {
+    "train_loss": 0.02012007816057255,
+    "train_acc": 1.0,
+    "val_loss": 0.16882708244591804,
+    "val_acc": 0.9607843137254902
+  },
+  "backbone_batchnorm_frozen": false,
+  "seed": 230521,
+  "device": "cuda",
+  "torch_version": "2.5.1"
+}
